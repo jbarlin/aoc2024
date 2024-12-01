@@ -30,3 +30,7 @@
 *.exe
 *.out
 *.app
+
+# Target dir
+target/
+*puzzle_input.txt
