@@ -30,3 +30,9 @@
 *.exe
 *.out
 *.app
+
+# Target dir
+target/
+day*/puzzle_input.txt
+tmp/
+profile.txt
