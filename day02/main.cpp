@@ -1,5 +1,4 @@
 #include "./main.h"
-#include "./inputs.h"
 
 #include <iostream>
 #include <string_view>
@@ -47,7 +46,7 @@ namespace day02
 
     int part1(std::string puzzle_input_in)
     {
-        std::stringstream input_file(puzzle_input_in);
+        std::ifstream input_file(puzzle_input_in);
 
         std::string s;
         int safe = 0;
@@ -100,7 +99,7 @@ namespace day02
 
     int part2(std::string puzzle_input_in)
     {
-        std::stringstream input_file(puzzle_input_in);
+        std::ifstream input_file(puzzle_input_in);
 
         std::string s;
         int safe = 0;
@@ -118,9 +117,9 @@ namespace day02
 
     int main()
     {
-        std::string test_input(day02inputs::test_input);
+
         int test_expected_1 = 2;
-        int test_actual_1 = part1(test_input);
+        int test_actual_1 = part1("./day02/test_input.txt");
         if (test_actual_1 != test_expected_1)
         {
             std::cout << "\tFAIL - Pt 1 Expected 2, got " << std::to_string(test_actual_1) << std::endl;
@@ -128,19 +127,15 @@ namespace day02
         }
 
         int test_expected_2 = 4;
-        int test_actual_2 = part2(test_input);
+        int test_actual_2 = part2("./day02/test_input.txt");
         if (test_actual_2 != test_expected_2)
         {
             std::cout << "\tFAIL - Pt 2 Expected 4, got " << std::to_string(test_actual_2) << std::endl;
             return 1;
         }
-        
-        std::string puzzle_input(day02inputs::puzzle_input);
 
-        std::cout << "\tThe part 1 answer is " << std::to_string(part1(puzzle_input)) << std::endl;
-        std::cout << "\tThe part 2 answer is " << std::to_string(part2(puzzle_input)) << std::endl;
+        std::cout << "\tThe part 1 answer is " << std::to_string(part1("./day02/puzzle_input.txt")) << std::endl;
+        std::cout << "\tThe part 2 answer is " << std::to_string(part2("./day02/puzzle_input.txt")) << std::endl;
         return 0;
     }
-
-    
 }
