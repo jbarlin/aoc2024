@@ -1,16 +1,19 @@
 #include "./main.h"
+#include "./inputs.h"
 
 #include <iostream>
 #include <string_view>
 #include <fstream>
 #include <vector>
+#include <sstream>
 
 namespace day01
 {
 
     int main()
     {
-        std::ifstream input_file("./day01/puzzle_input.txt");
+        std::string test_input(day01inputs::puzzle_input);
+        std::stringstream input_file(test_input);
 
         std::vector<long> left_list(6);
         std::vector<long> right_list(6);
