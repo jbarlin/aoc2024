@@ -1,30 +1,36 @@
 CXX = clang++
 CXXFLAGS = -std=c++23 -Wall
-SOURCES = $(wildcard *.cpp)
-HEADERS = $(wildcard *.h)
-OBJECTS = $(SOURCES:.cpp=.o)
+SOURCES := $(wildcard ./**/*.cpp ./*.cpp)
 
-run02: day02
-	./target/dists/day02
+run: clean all
+	clear
+	./target/aoc2024
 
-day02: day02.o
-	mkdir -p ./target/dists
-	$(CXX) $(CXXFLAGS) ./target/objs/day02.o -o ./target/dists/day02
+all:
+	mkdir -p ./target
+	@echo "Building $(SOURCES)"
+	$(CXX) $(CXXFLAGS) $(SOURCES) -o ./target/aoc2024
 
-day02.o: clean
-	mkdir -p ./target/objs/
-	$(CXX) $(CXXFLAGS) -c ./day02/main.cpp -o ./target/objs/day02.o
+bench: clean all opt3 opt2 opts optz opt3march opt2march
+	hyperfine --warmup 6 -N './target/aoc2024' './target/opt3' './target/opt2' './target/opt3m' './target/opt2m' './target/opts' './target/optz'
 
-run01: day01
-	./target/dists/day01
+opt2march:
+	$(CXX) $(CXXFLAGS) -O2 -march=native $(SOURCES) -o ./target/opt2m
 
-day01: day01.o
-	mkdir -p ./target/dists
-	$(CXX) $(CXXFLAGS) ./target/objs/day01.o -o ./target/dists/day01
+opt3march:
+	$(CXX) $(CXXFLAGS) -O3 -march=native $(SOURCES) -o ./target/opt3m
 
-day01.o: clean
-	mkdir -p ./target/objs/
-	$(CXX) $(CXXFLAGS) -c ./day01/main.cpp -o ./target/objs/day01.o
+optz:
+	$(CXX) $(CXXFLAGS) -Oz $(SOURCES) -o ./target/optz
+
+opts:
+	$(CXX) $(CXXFLAGS) -Os $(SOURCES) -o ./target/opts
+
+opt2:
+	$(CXX) $(CXXFLAGS) -O2 $(SOURCES) -o ./target/opt2
+
+opt3:
+	$(CXX) $(CXXFLAGS) -O3 $(SOURCES) -o ./target/opt3
 
 clean:
 	rm -rf ./target
