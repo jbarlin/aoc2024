@@ -39,7 +39,7 @@ namespace day01
         unsigned long long diff = 0;
         for (const auto &item : pairs)
         {
-            diff += ((item.first > item.second) ? item.first - item.second : item.second - item.first);
+            diff += (unsigned long long) std::abs(item.second - item.first);
         }
 
         std::cout << "\tThe part 1 answer is " << std::to_string(diff) << std::endl;
@@ -54,7 +54,7 @@ namespace day01
                 mult += (rh == item) ? 1 : 0;
             }
 
-            similar += (item * mult);
+            similar += (unsigned long long) (item * mult);
         }
 
         std::cout << "\tThe part 2 answer is " << std::to_string(similar) << std::endl;

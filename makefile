@@ -1,5 +1,5 @@
 CXX = clang++
-CXXFLAGS = -std=c++23 -Wall
+CXXFLAGS = -std=c++23 -Wall -Wfatal-errors -Wpedantic -Wextra -Wshadow -Wconversion
 SOURCES := $(wildcard ./**/*.cpp ./*.cpp)
 
 run: clean all
