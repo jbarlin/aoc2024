@@ -5,8 +5,6 @@
 #include <regex>
 #include <cassert>
 
-#define C_ALL(X) cbegin(X), cend(X)
-
 namespace day03
 {
 
