@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-NUM_DAYS=6
+NUM_DAYS=7
 
 make debug
 
@@ -60,7 +60,7 @@ EOT
 
 for i in $(seq -f "%02g" $NUM_DAYS -1 1); do
   tee -a ./src/main.cpp <<EOT
-case ${i}:
+case std::stoi("${i}"):
   std::cout << "Day ${i}" << std::endl;
   return d${i}();
   break;
