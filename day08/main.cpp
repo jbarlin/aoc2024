@@ -36,10 +36,6 @@ namespace day08
                 }
             }
         }
-        for (Point p : antinodes)
-        {
-            std::cout << "RES" << p.as_string() << std::endl;
-        }
         return antinodes.size();
     }
 
@@ -101,10 +97,6 @@ namespace day08
                     map[ix].push_back(p);
                 }
 
-                if(c == '#' || c == 'T'){
-                    std::cout << "EXP" << (Point(x, y)).as_string() << std::endl;
-                }
-
                 x++;
             }
             y++;
@@ -115,12 +107,6 @@ namespace day08
 
     int main()
     {
-
-        const Map conrad_is_stupid = parse_puzzle("./day08/basket_case.txt", 10);
-        unsigned int blah = part2(conrad_is_stupid);
-        std::cout << "\tDBG " << blah << std::endl;
-        assert(blah == 9);
-
         const Map test = parse_puzzle("./day08/test_input.txt", 12);
         // assert(test.map.size() == 2 && ((test.map[0].size() == 3 && test.map[1].size() == 4) || (test.map[0].size() == 4 && test.map[1].size() == 3)));
         std::cout << "\tRead in test input" << std::endl;

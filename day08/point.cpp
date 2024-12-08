@@ -61,7 +61,7 @@ namespace day08
         int dx = ((int)B.x) - ((int)this->x);
         int dy = ((int)B.y) - ((int)this->y);
         std::set<Point> points;
-        unsigned int mult = 0;
+        int mult = 2;
         while (true)
         {
             long x = ((long)B.x) - (dx * mult);
@@ -70,20 +70,14 @@ namespace day08
             {
                 mult++;
                 const Point c(x, y);
-                std::cout << "\t\tDBG: FROM " << B.as_string() << " THRU " << this->as_string() 
-                    << " dx " << std::to_string(dx) << " dy " << std::to_string(dy)
-                    << " TO " << c.as_string() << std::endl;
                 points.insert(c);
             }
             else
             {
-                std::cout << "\t\tDBG: FROM " << B.as_string() << " THRU " << this->as_string()
-                    << " dx " << std::to_string(dx) << " dy " << std::to_string(dy)
-                    << " OUTBOUND(" << std::to_string(x) << "," << std::to_string(y) << ")" << std::endl;
                 break;
             }
         }
-        mult = 0;
+        mult = 2;
         while (true)
         {
             long x = ((long)B.x) + (dx * mult);
@@ -92,16 +86,10 @@ namespace day08
             {
                 mult++;
                 const Point c(x, y);
-                std::cout << "\t\tDBG: FROM " << B.as_string() << " THRU " << this->as_string() 
-                    << " dx " << std::to_string(dx) << " dy " << std::to_string(dy)
-                    << " TO " << c.as_string() << std::endl;
                 points.insert(c);
             }
             else
             {
-                std::cout << "\t\tDBG: FROM " << B.as_string() << " THRU " << this->as_string()
-                    << " dx " << std::to_string(dx) << " dy " << std::to_string(dy)
-                    << " OUTBOUND(" << std::to_string(x) << "," << std::to_string(y) << ")" << std::endl;
                 return points;
             }
         }
