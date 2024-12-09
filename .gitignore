@@ -34,6 +34,7 @@
 # Target dir
 target/
 day*/puzzle_input.txt
+day*/puzzle_input*.txt
 day*/basket_case.txt
 tmp/
 profile.txt

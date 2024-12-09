@@ -14,7 +14,7 @@ profileable:
 debug:
 	mkdir -p ./target
 	@echo "Building $(SOURCES)"
-	$(CXX) $(CXXFLAGS) $(SOURCES) -o ./target/aoc2024
+	$(CXX) $(CXXFLAGS) -g $(SOURCES) -o ./target/aoc2024
 
 opt2mold:
 	$(CXX) $(CXXFLAGS) -fuse-ld=mold -O2 $(SOURCES) -o ./target/opt2mold

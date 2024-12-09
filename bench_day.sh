@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-NUM_DAYS=8
+NUM_DAYS=9
 
 make all
 
