@@ -1,6 +1,6 @@
 CXX = g++
 CXXFLAGS = -std=c++23 -Wall -Wfatal-errors
-SOURCES := $(wildcard ./**/*.cpp ./*.cpp)
+SOURCES := $(wildcard ./day*/*.cpp ./*.cpp)
 
 run: clean debug
 	clear
@@ -8,12 +8,10 @@ run: clean debug
 
 profileable:
 	mkdir -p ./target
-	@echo "Building $(SOURCES)"
 	$(CXX) $(CXXFLAGS) -pg $(SOURCES) -o ./target/aoc2024
 
 debug:
 	mkdir -p ./target
-	@echo "Building $(SOURCES)"
 	$(CXX) $(CXXFLAGS) -g $(SOURCES) -o ./target/aoc2024
 
 opt2mold:

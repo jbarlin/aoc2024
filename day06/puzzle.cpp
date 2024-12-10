@@ -24,6 +24,7 @@ namespace day06
         n_map[pt.y][pt.x] = 1;
         return Puzzle(n_map, start, size);
     }
+    
     const unsigned int Puzzle::count_of_obsticles(){
         unsigned int ct = 0;
         for(unsigned int y = 0; y < size; y++){

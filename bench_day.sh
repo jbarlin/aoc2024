@@ -1,7 +1,8 @@
 #!/bin/bash
 set -e
 
-NUM_DAYS=9
+NUM_DAYS=10
+NUM_DAYS_MIN_2=8
 
 make all
 
@@ -35,7 +36,7 @@ echo -e "# Advent of Code 2024 benchmarkings\n\n## All days combined\n" >./resul
 
 cat ./tmp/bench.md >>./results_benchmark.md
 
-for i in $(seq -f "%02g" $NUM_DAYS -1 1)
+for i in $(seq -f "%02g" $NUM_DAYS -1 $NUM_DAYS_MIN_2)
 do
   
   echo -e "\n## Day ${i}\n" >> ./results_benchmark.md

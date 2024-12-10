@@ -22,7 +22,17 @@ namespace day00
     }
 
     puzzle parse_puzzle(std::string path){
+        std::vector<std::vector<uc>> out;
 
+        std::ifstream input_file(path);
+        assert(input_file.is_open());
+        std::string input_line;
+
+        while(std::getline(input_file, input_line)){
+            
+        }
+
+        return out;
     }
 
     int main()
