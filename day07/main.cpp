@@ -60,7 +60,7 @@ namespace day07
             }
             results.emplace_back(Equation(goal, partials));
         }
-
+        input_file.close();
         return results;
     }
 

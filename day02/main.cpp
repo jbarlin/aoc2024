@@ -58,7 +58,7 @@ namespace day02
                 safe++;
             }
         }
-
+        input_file.close();
         return safe;
     }
 
@@ -111,7 +111,7 @@ namespace day02
                 safe++;
             }
         }
-
+        input_file.close();
         return safe;
     }
 

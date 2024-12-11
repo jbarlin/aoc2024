@@ -1,8 +1,8 @@
 #!/bin/bash
 set -e
 
-NUM_DAYS=10
-NUM_DAYS_MIN_2=8
+NUM_DAYS=11
+NUM_DAYS_MIN_2=9
 
 make all
 

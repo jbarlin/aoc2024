@@ -89,7 +89,7 @@ namespace day06
             }
             map.emplace_back(line_reps);
         }
-
+        input_file.close();
         for (unsigned int y = 0; y < size; y++)
         {
             for (unsigned int x = 0; x < size; x++)

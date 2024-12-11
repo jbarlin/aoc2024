@@ -26,7 +26,7 @@ namespace day01
             right_list.push_back(
                 std::stol(s));
         }
-
+        input_file.close();
         std::sort(left_list.begin(), left_list.end());
         std::sort(right_list.begin(), right_list.end());
 

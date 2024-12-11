@@ -58,7 +58,7 @@ namespace day10
             result.emplace_back(cells);
             y++;
         }
-
+        input_file.close();
         return puzzle(result, zeros, result.size());
     }
 

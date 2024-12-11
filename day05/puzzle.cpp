@@ -52,6 +52,7 @@ namespace day05
                 books.push_back(book);
             }
         }
+        input_file.close();
     }
 
     std::vector<std::vector<unsigned char>> Puzzle::compliant_books()

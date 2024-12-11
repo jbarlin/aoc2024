@@ -59,6 +59,7 @@ namespace day04
             word_search.emplace_back(line_reps);
         }
         word_search.shrink_to_fit();
+        input_file.close();
         return word_search;
     }
 

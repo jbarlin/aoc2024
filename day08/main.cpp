@@ -101,7 +101,7 @@ namespace day08
             }
             y++;
         }
-
+        input_file.close();
         return Map(map, size);
     }
 
