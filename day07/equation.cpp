@@ -2,6 +2,7 @@
 
 #include <ranges>
 #include <iostream>
+#include <cmath>
 
 namespace day07
 {
@@ -48,9 +49,23 @@ namespace day07
         }
     }
 
+    const unsigned int count_of_digits(unsigned long long in)
+    {
+        unsigned int digits = 0;
+        while (in > 0)
+        {
+            in /= 10;
+            digits++;
+        }
+        return digits;
+    }
+
     bool by_concat(unsigned int curr_ix, unsigned long goal, unsigned long curr, const std::vector<unsigned int> &partials)
     {
-        const unsigned long joined = std::stoul(std::to_string(curr) + std::to_string(partials[curr_ix]));
+        const auto part = partials[curr_ix];
+        const auto part_sz = count_of_digits(part);
+        const auto n_curr = curr * std::pow(10, part_sz);
+        const unsigned long joined = n_curr + part;
         if (curr_ix == (partials.size() - 1))
         {
             return goal == joined;
