@@ -1,5 +1,7 @@
 #include "blinky.h"
 
+#include "../utils/numerics.h"
+
 #include <cmath>
 #include <cassert>
 #include <iostream>
@@ -10,17 +12,6 @@ namespace day11
     const ull Inky::total_stones_after(const unsigned int target_blinks)
     {
         return find_stone_end_count(starting_position, target_blinks);
-    }
-
-    const unsigned int count_of_digits(ull in)
-    {
-        unsigned int digits = 0;
-        while (in > 0)
-        {
-            in /= 10;
-            digits++;
-        }
-        return digits;
     }
 
     const std::vector<ull> blink(ull input)
@@ -34,21 +25,13 @@ namespace day11
         }
         else
         {
-            const unsigned int c_digits = count_of_digits(input);
+            const unsigned int c_digits = numerics::count_of_digits(input);
             if (c_digits % 2 == 1)
             {
                 return {input * 2024};
             } else {
-                // 512_072 / 000 -> 512
-                // 512 * 000 = 512_000
-                // 512_000 - 512_072 = 72 ???
-                // 512_072 is 6 digits, need 3 0's on a 1 - 10^3?
-                // 28_676_032 is 8, need 4 0s 
-
-                unsigned int divisor = std::pow(10, c_digits / 2);
-                const ull left_half = input / divisor;
-                const ull right_half = input - (left_half * divisor);
-                return {left_half, right_half};
+                const auto p = numerics::split_number(input, c_digits);
+                return {p.first, p.second};
             }
         }
     }

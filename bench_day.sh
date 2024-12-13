@@ -2,7 +2,7 @@
 set -e
 
 NUM_DAYS=13
-NUM_DAYS_MIN_2=10
+NUM_DAYS_MIN_2=1
 
 make all
 

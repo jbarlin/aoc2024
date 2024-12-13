@@ -1,4 +1,5 @@
 #include "equation.h"
+#include "../utils/numerics.h"
 
 #include <ranges>
 #include <iostream>
@@ -49,23 +50,11 @@ namespace day07
         }
     }
 
-    const unsigned int count_of_digits(unsigned long long in)
-    {
-        unsigned int digits = 0;
-        while (in > 0)
-        {
-            in /= 10;
-            digits++;
-        }
-        return digits;
-    }
-
     bool by_concat(unsigned int curr_ix, unsigned long goal, unsigned long curr, const std::vector<unsigned int> &partials)
     {
         const auto part = partials[curr_ix];
-        const auto part_sz = count_of_digits(part);
-        const auto n_curr = curr * std::pow(10, part_sz);
-        const unsigned long joined = n_curr + part;
+        const unsigned long joined = numerics::concat_numbers(curr, part);
+
         if (curr_ix == (partials.size() - 1))
         {
             return goal == joined;
@@ -82,15 +71,91 @@ namespace day07
         }
     }
 
+    bool by_sub(const unsigned int curr_ix, const unsigned long curr, const std::vector<unsigned int> &partials, const bool concat);
+    bool by_div(const unsigned int curr_ix, const unsigned long curr, const std::vector<unsigned int> &partials, const bool concat);
+    bool by_split(const unsigned int curr_ix, const unsigned long curr, const std::vector<unsigned int> &partials);
+
+    bool by_div(const unsigned int curr_ix, const unsigned long curr, const std::vector<unsigned int> &partials, const bool concat)
+    {
+        const auto lookat = partials[curr_ix];
+        if (curr_ix == 0)
+        {
+            return curr == lookat;
+        }
+        else if (curr % lookat != 0)
+        {
+            return false;
+        }
+        else
+        {
+            const unsigned long nx = curr / lookat;
+            return by_sub(curr_ix - 1, nx, partials, concat) ||
+                   by_div(curr_ix - 1, nx, partials, concat) ||
+                   (concat && by_split(curr_ix - 1, nx, partials));
+        }
+    }
+
+    bool by_sub(const unsigned int curr_ix, const unsigned long curr, const std::vector<unsigned int> &partials, const bool concat)
+    {
+        const auto lookat = partials[curr_ix];
+        if (curr_ix == 0)
+        {
+            return curr == lookat;
+        }
+        else if (lookat > curr)
+        {
+            return false;
+        }
+        else
+        {
+            const unsigned long nx = curr - lookat;
+            return by_sub(curr_ix - 1, nx, partials, concat) ||
+                   by_div(curr_ix - 1, nx, partials, concat) ||
+                   (concat && by_split(curr_ix - 1, nx, partials));
+        }
+    }
+
+    bool by_split(const unsigned int curr_ix, const unsigned long curr, const std::vector<unsigned int> &partials)
+    {
+        if (curr_ix == 0)
+        {
+            return false;
+        }
+        const auto lookat = partials[curr_ix];
+        if (lookat > curr)
+        {
+            return false;
+        }
+        const auto split = numerics::split_off_digits(curr, numerics::count_of_digits(lookat));
+        if (split.second == lookat)
+        {
+            const unsigned long nx = split.first;
+            return by_sub(curr_ix - 1, nx, partials, true) ||
+                   by_div(curr_ix - 1, nx, partials, true) ||
+                   by_split(curr_ix - 1, nx, partials);
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     bool Equation::does_work_pt1()
     {
-        bool ans = by_add(0, goal, 0, partials, false);
-        return ans;
+        // bool ans = by_add(0, goal, 0, partials, false);
+        // return ans;
+        const auto curr_ix = partials.size() - 1;
+        return by_div(curr_ix, goal, partials, false) ||
+                by_sub(curr_ix, goal, partials, false);
     }
 
     bool Equation::does_work_pt2()
     {
-        bool ans = by_add(0, goal, 0, partials, true);
-        return ans;
+        // bool ans = by_add(0, goal, 0, partials, true);
+        // return ans;
+        const auto curr_ix = partials.size() - 1;
+        return by_div(curr_ix, goal, partials, true) ||
+                by_sub(curr_ix, goal, partials, true) || 
+                by_split(curr_ix, goal, partials);
     }
 }
