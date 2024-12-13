@@ -52,98 +52,73 @@ namespace day12
         {
             seen[x][y] = true;
             ans.area++;
-            if (x + 1 < size)
-            {
-                const auto nx = (Point(x + 1, y));
-                if (nx.extract_value_square_map(input) == curr)
-                {
-                    auto b = fill_out_from_cell(nx, input, seen, size, curr);
-                    ans.area += b.area;
-                    ans.perimeter += b.perimeter;
-                    ans.corner += b.corner;
-                }
-                else
-                {
-                    ans.perimeter++;
-                }
-            }
-            else
-            {
-                ans.perimeter++;
-            }
-            // -1, 0
-            if (x >= 1)
-            {
-                const auto nx = (Point(x - 1, y));
-                if (nx.extract_value_square_map(input) == curr)
-                {
-                    auto b = fill_out_from_cell(nx, input, seen, size, curr);
-                    ans.area += b.area;
-                    ans.perimeter += b.perimeter;
-                    ans.corner += b.corner;
-                }
-                else
-                {
-                    ans.perimeter++;
-                }
-            }
-            else
+
+            const auto nx_up = Point(x, y - 1);
+            const auto nx_down = Point(x, y + 1);
+            const auto nx_left = Point(x - 1, y);
+            const auto nx_right = Point(x + 1, y);
+
+            const bool UP = !((nx_up).inside(size) && (((nx_up)).extract_value_square_map(input) == curr));
+            const bool UP_RIGHT = !((Point(x + 1, y - 1)).inside(size) && (((Point(x + 1, y - 1))).extract_value_square_map(input) == curr));
+            const bool RIGHT = !((nx_right).inside(size) && (((nx_right)).extract_value_square_map(input) == curr));
+            const bool DOWN_RIGHT = !((Point(x + 1, y + 1)).inside(size) && (((Point(x + 1, y + 1))).extract_value_square_map(input) == curr));
+            const bool DOWN = !((nx_down).inside(size) && (((nx_down)).extract_value_square_map(input) == curr));
+            const bool DOWN_LEFT = !((Point(x - 1, y + 1)).inside(size) && (((Point(x - 1, y + 1))).extract_value_square_map(input) == curr));
+            const bool LEFT = !((nx_left).inside(size) && (((nx_left)).extract_value_square_map(input) == curr));
+            const bool UP_LEFT = !((Point(x - 1, y - 1)).inside(size) && (((Point(x - 1, y - 1))).extract_value_square_map(input) == curr));
+
+            if (DOWN)
             {
                 ans.perimeter++;
             }
-            // 0, +1
-            if ((y + 1) < size)
-            {
-                const auto nx = (Point(x, y + 1));
-                if (nx.extract_value_square_map(input) == curr)
-                {
-                    auto b = fill_out_from_cell(nx, input, seen, size, curr);
-                    ans.area += b.area;
-                    ans.perimeter += b.perimeter;
-                    ans.corner += b.corner;
-                }
-                else
-                {
-                    ans.perimeter++;
-                }
-            }
             else
+            {
+                auto b = fill_out_from_cell(nx_down, input, seen, size, curr);
+                ans.area += b.area;
+                ans.perimeter += b.perimeter;
+                ans.corner += b.corner;
+            }
+
+            if (UP)
             {
                 ans.perimeter++;
             }
-            // 0, -1
-            if (y >= 1)
+            else
             {
-                const auto nx = (Point(x, y - 1));
-                if (nx.extract_value_square_map(input) == curr)
-                {
-                    auto b = fill_out_from_cell(nx, input, seen, size, curr);
-                    ans.area += b.area;
-                    ans.perimeter += b.perimeter;
-                    ans.corner += b.corner;
-                }
-                else
-                {
-                    ans.perimeter++;
-                }
+                auto b = fill_out_from_cell(nx_up, input, seen, size, curr);
+                ans.area += b.area;
+                ans.perimeter += b.perimeter;
+                ans.corner += b.corner;
+            }
+
+            if (RIGHT)
+            {
+                ans.perimeter++;
             }
             else
             {
+                auto b = fill_out_from_cell(nx_right, input, seen, size, curr);
+                ans.area += b.area;
+                ans.perimeter += b.perimeter;
+                ans.corner += b.corner;
+            }
+
+            if (LEFT)
+            {
                 ans.perimeter++;
+            }
+            else
+            {
+                auto b = fill_out_from_cell(nx_left, input, seen, size, curr);
+                ans.area += b.area;
+                ans.perimeter += b.perimeter;
+                ans.corner += b.corner;
             }
 
             // For a corner, all three of them must either be:
             //  * Out of bounds; or
             //  * Not the same as this point
 
-            const bool UP = !((Point(x, y - 1)).inside(size) && (((Point(x, y - 1))).extract_value_square_map(input) == curr));
-            const bool UP_RIGHT = !((Point(x + 1, y - 1)).inside(size) && (((Point(x + 1, y - 1))).extract_value_square_map(input) == curr));
-            const bool RIGHT = !((Point(x + 1, y)).inside(size) && (((Point(x + 1, y))).extract_value_square_map(input) == curr));
-            const bool DOWN_RIGHT = !((Point(x + 1, y + 1)).inside(size) && (((Point(x + 1, y + 1))).extract_value_square_map(input) == curr));
-            const bool DOWN = !((Point(x, y + 1)).inside(size) && (((Point(x, y + 1))).extract_value_square_map(input) == curr));
-            const bool DOWN_LEFT = !((Point(x - 1, y + 1)).inside(size) && (((Point(x - 1, y + 1))).extract_value_square_map(input) == curr));
-            const bool LEFT = !((Point(x - 1, y)).inside(size) && (((Point(x - 1, y))).extract_value_square_map(input) == curr));
-            const bool UP_LEFT = !((Point(x - 1, y - 1)).inside(size) && (((Point(x - 1, y - 1))).extract_value_square_map(input) == curr));
             // UPDATE: You also need the case where e.g. DOWN and LEFT are same as us, but not DOWN_LEFT
             // FURTHER UPDATE: Corners also include where DOWN and LEFT are different and DOWN_LEFT is same since we don't fence diagonally
             if (LEFT == UP && (UP_LEFT || UP != UP_LEFT))
@@ -162,9 +137,6 @@ namespace day12
             {
                 ans.corner++;
             }
-
-            
-
         }
         return ans;
     }
