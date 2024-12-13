@@ -32,7 +32,7 @@ hyperfine --export-markdown ./tmp/bench.md \
     './target/opt2moldmarch' \
     './target/opt3moldmarch'
 
-echo -e "# Advent of Code 2024 benchmarkings\n\n## All days combined\n" >./results_benchmark.md
+echo -e "# Advent of Code 2024 benchmarkings\n\nResults collected using hyperfine, and include the following process for each day:\n 1. Reading in the test input\n 2. Validating the test input gives the correct answers\n 3. Reading in the puzzle input\n 4. Solving the puzzle\n\n## All days combined\n" >./results_benchmark.md
 
 cat ./tmp/bench.md >>./results_benchmark.md
 
