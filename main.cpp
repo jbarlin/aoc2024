@@ -46,69 +46,93 @@ int run_all_days()
     return 0;
 }
 
+int run_day(const int day)
+{
+    switch (day)
+    {
+    case 13:
+        std::cout << "Day 13" << std::endl;
+        return day13::main();
+        break;
+    case 12:
+        std::cout << "Day 12" << std::endl;
+        return day12::main();
+        break;
+    case 11:
+        std::cout << "Day 11" << std::endl;
+        return day11::main();
+        break;
+    case 10:
+        std::cout << "Day 10" << std::endl;
+        return day10::main();
+        break;
+    case 9:
+        std::cout << "Day 9" << std::endl;
+        return day09::main();
+        break;
+    case 8:
+        std::cout << "Day 8" << std::endl;
+        return day08::main();
+        break;
+    case 7:
+        std::cout << "Day 7" << std::endl;
+        return day07::main();
+        break;
+    case 6:
+        std::cout << "Day 6" << std::endl;
+        return day06::main();
+        break;
+    case 5:
+        std::cout << "Day 5" << std::endl;
+        return day05::main();
+        break;
+    case 4:
+        std::cout << "Day 4" << std::endl;
+        return day04::main();
+        break;
+    case 3:
+        std::cout << "Day 3" << std::endl;
+        return day03::main();
+        break;
+    case 2:
+        std::cout << "Day 2" << std::endl;
+        return day02::main();
+        break;
+    case 1:
+        std::cout << "Day 1" << std::endl;
+        return day01::main();
+        break;
+    default:
+        return run_all_days();
+        break;
+    }
+}
+
 int main(int argc, char *argv[])
 {
-    if (argc == 2)
+    if (argc == 3)
     {
-        int day = std::stoi(argv[1]);
-        switch (day)
+        const unsigned int dayFrom = std::stoi(argv[1]);
+        const unsigned int dayTo = std::stoi(argv[2]);
+        if (dayFrom < dayTo)
         {
-        case 13:
-            std::cout << "Day 13" << std::endl;
-            return day13::main();
-            break;
-        case 12:
-            std::cout << "Day 12" << std::endl;
-            return day12::main();
-            break;
-        case 11:
-            std::cout << "Day 11" << std::endl;
-            return day11::main();
-            break;
-        case 10:
-            std::cout << "Day 10" << std::endl;
-            return day10::main();
-            break;
-        case 9:
-            std::cout << "Day 9" << std::endl;
-            return day09::main();
-            break;
-        case 8:
-            std::cout << "Day 8" << std::endl;
-            return day08::main();
-            break;
-        case 7:
-            std::cout << "Day 7" << std::endl;
-            return day07::main();
-            break;
-        case 6:
-            std::cout << "Day 6" << std::endl;
-            return day06::main();
-            break;
-        case 5:
-            std::cout << "Day 5" << std::endl;
-            return day05::main();
-            break;
-        case 4:
-            std::cout << "Day 4" << std::endl;
-            return day04::main();
-            break;
-        case 3:
-            std::cout << "Day 3" << std::endl;
-            return day03::main();
-            break;
-        case 2:
-            std::cout << "Day 2" << std::endl;
-            return day02::main();
-            break;
-        case 1:
-            std::cout << "Day 1" << std::endl;
-            return day01::main();
-            break;
-        default:
-            return run_all_days();
-            break;
+            for (unsigned int i = dayFrom; i <= dayTo; i++)
+            {
+                assert(run_day(i) == 0);
+            }
         }
+        else
+        {
+            for (unsigned int i = dayFrom; i >= dayTo; i--)
+            {
+                assert(run_day(i) == 0);
+            }
+        }
+    }
+    else if (argc == 2)
+    {
+        const int day = std::stoi(argv[1]);
+        return run_day(day);
     }
     else
     {
