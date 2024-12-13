@@ -1,6 +1,6 @@
 #pragma once
 
-namespace day06{
+namespace point{
     class Direction{
         private:        
         public:

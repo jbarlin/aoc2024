@@ -1,13 +1,16 @@
 #pragma once
 
+#include "../utils/point.h"
+
 #include <optional>
 #include <vector>
 #include <string>
-#include "point.h"
 #include <set>
 
 namespace day06
 {
+    typedef point::Point Point;
+    typedef point::Direction Direction;
     class WalkResult
     {
     public:

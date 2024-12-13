@@ -240,6 +240,8 @@ namespace day04
         std::cout << "\tPart 1 Answer - " << std::to_string(conrad_pt1) << std::endl;
         std::cout << "\tPart 2 Answer - " << std::to_string(conrad_pt2) << std::endl;
 
+        assert(conrad_pt1 == 2545);
+        assert(conrad_pt2 == 1886);
 
         return 0;
     }

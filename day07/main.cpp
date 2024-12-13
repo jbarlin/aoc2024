@@ -91,11 +91,13 @@ namespace day07
         std::cout << "\tRead in puzzle input" << std::endl;
 
         unsigned long long conrad_pt1 = part1(actual);
-        assert(conrad_pt1 > 3350727456176);
         std::cout << "\tPart 1 Answer - " << std::to_string(conrad_pt1) << std::endl;
 
         unsigned long long conrad_pt2 = part2(actual);
         std::cout << "\tPart 2 Answer - " << std::to_string(conrad_pt2) << std::endl;
+
+        assert(conrad_pt1 == 3351424677624);
+        assert(conrad_pt2 == 204976636995111);
 
         return 0;
     }

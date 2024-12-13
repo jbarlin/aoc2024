@@ -1,5 +1,4 @@
 #include "./main.h"
-#include "point.h"
 #include "map.h"
 
 #include <iostream>
@@ -137,6 +136,9 @@ namespace day08
 
         unsigned int conrad_pt2 = part2(actual);
         std::cout << "\tPart 2 Answer - " << std::to_string(conrad_pt2) << std::endl;
+
+        assert(conrad_pt1 == 252);
+        assert(conrad_pt2 == 839);
         return 0;
     }
 }

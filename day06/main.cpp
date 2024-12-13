@@ -9,6 +9,8 @@
 namespace day06
 {
 
+    const Direction UP = point::UP;
+
     unsigned long part2(const Puzzle &puzzle, const std::set<Point> &points_walked)
     {
         unsigned long blockers = 0;

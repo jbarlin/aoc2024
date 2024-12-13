@@ -1,5 +1,5 @@
 #include "main.h"
-#include "point.h"
+#include "../utils/point.h"
 
 #include <iostream>
 #include <vector>
@@ -12,6 +12,8 @@ namespace day12
 {
     typedef std::vector<std::vector<uc>> puzzle;
     typedef std::vector<std::vector<bool>> bvec;
+
+    typedef point::Point Point;
 
     struct running
     {
@@ -244,8 +246,11 @@ namespace day12
 
         answer puzzle_answer = compute_answer(actual);
         std::cout << "\tPart 1 Answer - " << std::to_string(puzzle_answer.part1) << std::endl;
-
         std::cout << "\tPart 2 Answer - " << std::to_string(puzzle_answer.part2) << std::endl;
+
+        assert(puzzle_answer.part1 == 1549354);
+        assert(puzzle_answer.part2 == 937032);
+
         return 0;
     }
 }

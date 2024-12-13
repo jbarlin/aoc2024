@@ -53,6 +53,10 @@ namespace day11
 
         ull conrad_pt2 = actual.total_stones_after(75);
         std::cout << "\tPart 2 Answer - " << std::to_string(conrad_pt2) << std::endl;
+
+        assert(conrad_pt1 == 216042);
+        assert(conrad_pt2 == 255758646442399);
+
         return 0;
     }
 }

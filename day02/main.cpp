@@ -5,6 +5,7 @@
 #include <fstream>
 #include <vector>
 #include <sstream>
+#include <cassert>
 
 namespace day02
 {
@@ -134,8 +135,12 @@ namespace day02
             return 1;
         }
 
-        std::cout << "\tThe part 1 answer is " << std::to_string(part1("./day02/puzzle_input.txt")) << std::endl;
-        std::cout << "\tThe part 2 answer is " << std::to_string(part2("./day02/puzzle_input.txt")) << std::endl;
+        const auto p1 = part1("./day02/puzzle_input.txt");
+        std::cout << "\tThe part 1 answer is " << std::to_string(p1) << std::endl;
+        const auto p2 = part2("./day02/puzzle_input.txt");
+        std::cout << "\tThe part 2 answer is " << std::to_string(p2) << std::endl;
+        assert(p1 == 510);
+        assert(p2 == 553);
         return 0;
     }
 }

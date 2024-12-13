@@ -3,7 +3,7 @@
 #include <cassert>
 #include <iostream>
 
-namespace day06
+namespace point
 {
     Direction::Direction(char x, char y) : x{x}, y{y}
     {

@@ -82,13 +82,14 @@ namespace day09
         std::cout << "\tRead in puzzle input" << std::endl;
 
         ull conrad_pt1 = part1(actual);
-        assert(26495653252336 > conrad_pt1);
-        assert(8093148 < conrad_pt1);
         std::cout << "\tPart 1 Answer - " << std::to_string(conrad_pt1) << std::endl;
 
         ull conrad_pt2 = part2(actual);
-        assert(8597959775130 > conrad_pt2);
         std::cout << "\tPart 2 Answer - " << std::to_string(conrad_pt2) << std::endl;
+
+        assert(conrad_pt1 == 6378826667552);
+        assert(conrad_pt2 == 6413328569890);
+
         return 0;
     }
 }

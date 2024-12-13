@@ -2,10 +2,11 @@
 
 #include <map>
 #include <vector>
-#include "point.h"
+#include "../utils/point.h"
 
 namespace day08
 {
+    typedef point::Point Point;
     class Map
     {
     private:

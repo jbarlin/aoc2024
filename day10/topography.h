@@ -1,11 +1,12 @@
 #pragma once
 
 #include <vector>
-#include "point.h"
+#include "../utils/point.h"
 
 namespace day10
 {
     typedef unsigned long long ull;
+    typedef point::Point Point;
 
     class Topography
     {

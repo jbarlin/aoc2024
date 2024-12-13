@@ -4,6 +4,7 @@
 #include <string_view>
 #include <fstream>
 #include <vector>
+#include <cassert>
 
 namespace day01
 {
@@ -58,6 +59,9 @@ namespace day01
         }
 
         std::cout << "\tThe part 2 answer is " << std::to_string(similar) << std::endl;
+
+        assert(diff == 2264607);
+        assert(similar == 19457120);
 
         return 0;
     }

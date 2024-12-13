@@ -89,9 +89,12 @@ namespace day03
         }
 
         auto puzzle_input = day03inputs::get_file_contents("./day03/puzzle_input.txt");
-
-        std::cout << "\t Part 1 Answer - " << std::to_string(part1(puzzle_input)) << std::endl;
-        std::cout << "\t Part 2 Answer - " << std::to_string(part2(puzzle_input)) << std::endl;
+        const auto p1 = part1(puzzle_input);
+        std::cout << "\t Part 1 Answer - " << std::to_string(p1) << std::endl;
+        const auto p2 = part2(puzzle_input);
+        std::cout << "\t Part 2 Answer - " << std::to_string(p2) << std::endl;
+        assert(p1 == 171183089);
+        assert(p2 == 63866497);
 
         return 0;
     }

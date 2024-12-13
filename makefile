@@ -1,6 +1,6 @@
 CXX = g++
 CXXFLAGS = -std=c++23 -Wall -Wfatal-errors
-SOURCES := $(wildcard ./day*/*.cpp ./*.cpp)
+SOURCES := $(wildcard ./utils/*.cpp ./utils/*.h ./day*/*.cpp ./*.cpp)
 
 run: clean debug
 	clear
