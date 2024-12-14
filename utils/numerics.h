@@ -11,4 +11,6 @@ namespace numerics {
     const std::pair<ull, ull> split_number(const ull in, const ui size);
     const std::pair<ull, ull> split_number(const ull in);
     const ui wrap_addition_upper_bound(const ui original, long long adding, const ui upper_bound);
+    const ui modular_multiplicative_inverse(const ui a, const ui m);
+    const ui non_negative_mod(const long long input, const ui modulo);
 }

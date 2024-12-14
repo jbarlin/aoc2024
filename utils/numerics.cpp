@@ -2,6 +2,7 @@
 
 #include <cassert>
 #include <cmath>
+#include <numeric>
 
 namespace numerics
 {
@@ -47,5 +48,23 @@ namespace numerics
     {
         const long long ret_val = adding + original;
         return (ret_val < 0) ? (upper_bound - 1 + ((ret_val + 1) % upper_bound)) : (ret_val % upper_bound);
+    }
+
+    const ui modular_multiplicative_inverse(const ui a, const ui m)
+    {
+        assert(std::gcd(a, m) == 1);
+        for (ui x = 2; x < m; x++)
+        {
+            if (a * x % m == 1)
+            {
+                return x;
+            }
+        }
+        return 0;
+    }
+
+    const ui non_negative_mod(const long long input, const ui modulo) {
+        const long result = input % modulo;
+        return (result <= 0) ? modulo + result : result;
     }
 }

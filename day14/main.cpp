@@ -17,7 +17,29 @@ namespace day14
         const unsigned int y_tiles;
     };
 
-    std::vector<Droid> ticks(const std::vector<Droid> &input_droids, unsigned int ticks, const unsigned int max_x, const unsigned int max_y)
+    std::pair<float, float> varience(const std::vector<Droid> &droids)
+    {
+        long sumX = 0;
+        long sumY = 0;
+        for (const Droid &d : droids)
+        {
+            sumX += d.position.x;
+            sumY += d.position.y;
+        }
+        const float meanX = ((float)sumX) / ((float)droids.size());
+        const float meanY = ((float)sumY) / ((float)droids.size());
+
+        float sqDiffX = 0;
+        float sqDiffY = 0;
+        for (const Droid &d : droids)
+        {
+            sqDiffX += (((long)d.position.x) - meanX) * (((long)d.position.x) - meanX);
+            sqDiffY += (((long)d.position.y) - meanY) * (((long)d.position.y) - meanY);
+        }
+        return std::pair(sqDiffX / droids.size(), sqDiffY / droids.size());
+    }
+
+    std::vector<Droid> ticks(const std::vector<Droid> &input_droids, const unsigned int ticks, const unsigned int max_x, const unsigned int max_y)
     {
         std::vector<Droid> resulting_droids;
         resulting_droids.reserve(input_droids.size());
@@ -29,7 +51,48 @@ namespace day14
         return resulting_droids;
     }
 
+    std::pair<unsigned int, unsigned int> best_varience_each_axis(const std::vector<Droid> &droids, const unsigned int max_x, const unsigned int max_y)
+    {
+        const unsigned int max_iters = (max_x < max_y) ? max_y : max_x;
+        const auto initial_var = varience(droids);
+        unsigned int best_x = 0;
+        unsigned int best_y = 0;
+        float best_x_val = initial_var.first;
+        float best_y_val = initial_var.second;
+
+        for (unsigned int tick = 1; tick <= max_iters; tick++)
+        {
+            const std::vector<Droid> at_ticks = ticks(droids, tick, max_x, max_y);
+            const auto var = varience(at_ticks);
+            if (var.first < best_x_val)
+            {
+                best_x_val = var.first;
+                best_x = tick;
+            }
+            if (var.second < best_y_val)
+            {
+                best_y_val = var.second;
+                best_y = tick;
+            }
+        }
+
+        return std::pair(best_x, best_y);
+    }
+
+    // Chinese Remainder Theorum!
     ull part2(const puzzle &input)
+    {
+        assert(numerics::modular_multiplicative_inverse(101, 103) == 51);
+        const unsigned int invX = numerics::modular_multiplicative_inverse(input.x_tiles, input.y_tiles);
+        const auto best_v = best_varience_each_axis(input.droids, input.x_tiles, input.y_tiles);
+        const long long bx = best_v.first;
+        const long long by = best_v.second;
+        return numerics::non_negative_mod(
+            bx + invX * (by - bx) * input.x_tiles,
+            input.x_tiles * input.y_tiles);
+    }
+
+    ull part2_original(const puzzle &input)
     {
         // OK, this... isn't gonna be fun
         // OK, so this is +1 second already
