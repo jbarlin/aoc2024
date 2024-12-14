@@ -60,6 +60,6 @@ clean:
 
 vs: clean
 	$(CXX) $(CXXFLAGS) $(SOURCES) -o ./target/conrad_attempt_no_opt
-	$(CXX) $(CXXFLAGS) -O2 -march=native $(SOURCES) -o ./target/conrad_attempt_opt2_march
+	$(CXX) $(CXXFLAGS) -O3 -march=native $(SOURCES) -o ./target/conrad_attempt_opt3_march
 
 all: clean debug optz opts opt1 opt2 opt3 optzmarch optsmarch opt1march opt2march opt3march opt2mold opt3mold opt2mm opt3mm

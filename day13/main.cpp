@@ -103,6 +103,10 @@ namespace day13
 
         ull conrad_pt2 = part2(actual);
         std::cout << "\tPart 2 Answer - " << std::to_string(conrad_pt2) << std::endl;
+
+        assert(conrad_pt1 == 30413);
+        assert(conrad_pt2 == 92827349540204);
+
         return 0;
     }
 }

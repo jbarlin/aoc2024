@@ -7,12 +7,12 @@ namespace day05
     class Puzzle
     {
     private:
-        std::vector<Rule> rules;
-        std::vector<std::vector<unsigned char>> books;
+        const std::vector<Rule> rules;
+        const std::vector<std::vector<unsigned char>> books;
     public:
-        Puzzle(std::string input_file);
-        std::vector<std::vector<unsigned char>> compliant_books();
-        std::vector<std::vector<unsigned char>> noncompliant_books();
-        void fix_book(std::vector<unsigned char> &book);
+        Puzzle(const std::vector<Rule> &rules, const std::vector<std::vector<unsigned char>> &books) : rules{rules}, books{books} {};
+        const std::vector<std::vector<unsigned char>> compliant_books() const;
+        const std::vector<std::vector<unsigned char>> noncompliant_books() const;
+        const std::vector<unsigned char> fix_book(const std::vector<unsigned char> &book) const;
     };
 }

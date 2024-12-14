@@ -13,7 +13,7 @@ namespace day05
 
     public:
         Rule(unsigned char before, unsigned char after);
-        bool satisfied(std::vector<unsigned char> book);
+        bool satisfied(const std::vector<unsigned char> &book);
         void make_happy(std::vector<unsigned char> &book);
     };
 

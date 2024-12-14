@@ -11,7 +11,7 @@ namespace day10
             auto v = curr_loc.get_plus_in_bounds(square_size);
             for (const Point &p : v)
             {
-                if (p.extract_value_square_map(map) == 9)
+                if (p.extract_uchar_from_map(map) == 9)
                 {
                     returnable.insert(p);
                 }
@@ -22,7 +22,7 @@ namespace day10
             auto v = curr_loc.get_plus_in_bounds(square_size);
             for (const Point &p : v)
             {
-                if (p.extract_value_square_map(map) == looking_for)
+                if (p.extract_uchar_from_map(map) == looking_for)
                 {
                     auto results = distinct_nines(map, square_size, looking_for + 1, p);
                     returnable.insert(results.begin(), results.end());
@@ -40,7 +40,7 @@ namespace day10
             auto v = curr_loc.get_plus_in_bounds(square_size);
             for (const Point &p : v)
             {
-                if (p.extract_value_square_map(map) == 9)
+                if (p.extract_uchar_from_map(map) == 9)
                 {
                     count += 1;
                 }
@@ -53,7 +53,7 @@ namespace day10
             auto v = curr_loc.get_plus_in_bounds(square_size);
             for (const Point &p : v)
             {
-                if (p.extract_value_square_map(map) == looking_for)
+                if (p.extract_uchar_from_map(map) == looking_for)
                 {
                     count += distinct_trails(map, square_size, looking_for + 1, p);
                 }

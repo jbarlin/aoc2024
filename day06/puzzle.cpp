@@ -55,7 +55,7 @@ namespace day06
 
                 assert(next_point.x != a.x || next_point.y != a.y);
 
-                unsigned char lk = next_point.extract_value_square_map(map);
+                unsigned char lk = next_point.extract_uchar_from_map(map);
                 if (lk == 1)
                 {
                     return WalkResult(Point(a.x, a.y), steps, n_dir.turn_right(), points);
@@ -90,7 +90,7 @@ namespace day06
 
                 assert(next_point.x != a.x || next_point.y != a.y);
 
-                unsigned char lk = next_point.extract_value_square_map(map);
+                unsigned char lk = next_point.extract_uchar_from_map(map);
                 if (lk == 1)
                 {
                     return WalkResult(Point(a.x, a.y), steps, n_dir.turn_right(), points);

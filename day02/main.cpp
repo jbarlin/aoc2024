@@ -9,7 +9,7 @@
 
 namespace day02
 {
-    bool pt1_line_safe(std::string line)
+    bool pt1_line_safe(const std::string &line)
     {
         std::stringstream curr_line(line);
         std::string curr_look;
@@ -45,7 +45,7 @@ namespace day02
         return true;
     }
 
-    int part1(std::string puzzle_input_in)
+    int part1(const std::string puzzle_input_in)
     {
         std::ifstream input_file(puzzle_input_in);
 
@@ -98,7 +98,7 @@ namespace day02
         return false;
     }
 
-    int part2(std::string puzzle_input_in)
+    int part2(const std::string puzzle_input_in)
     {
         std::ifstream input_file(puzzle_input_in);
 

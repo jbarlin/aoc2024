@@ -129,7 +129,7 @@ namespace day06
         std::cout << "\tPassed tests" << std::endl;
         const Puzzle actual_puzzle = make_puzzle("./day06/puzzle_input.txt", 130);
 
-        std::set<Point> conrad_pt1 = part1(actual_puzzle);
+        const std::set<Point> conrad_pt1 = part1(actual_puzzle);
         unsigned long pt1 = conrad_pt1.size();
         std::cout << "\tPart 1 Answer - " << std::to_string(pt1) << std::endl;
         assert(pt1 == 5329);

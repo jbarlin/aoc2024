@@ -14,7 +14,7 @@ namespace day09
         return defragmented.checksum();
     }
 
-    std::string read_only_line(std::string path)
+    std::string read_only_line(const std::string path)
     {
         std::ifstream input_file(path);
         assert(input_file.is_open());
@@ -27,7 +27,7 @@ namespace day09
         return input_line;
     }
 
-    Disk parse_puzzle(std::string path)
+    Disk parse_puzzle(const std::string path)
     {
         std::vector<Free> frees;
         std::vector<File> files;
@@ -90,6 +90,22 @@ namespace day09
         assert(conrad_pt1 == 6378826667552);
         assert(conrad_pt2 == 6413328569890);
 
+        /*
+        // Evil input from https://old.reddit.com/r/adventofcode/comments/1haauty/2024_day_9_part_2_bonus_test_case_that_might_make/
+        const Disk evil = parse_puzzle("./day09/basket_case.txt");
+        std::cout << "\tRead in evil input" << std::endl;
+        ull evil_ans = part2(evil);
+        std::cout << "\tEvil Part 2 Answer - " << std::to_string(evil_ans) << std::endl;
+
+        assert(evil_ans == 97898222299196);
+
+        const Disk vevil = parse_puzzle("./day09/really_evil_input.txt");
+        std::cout << "\tRead in very evil input" << std::endl;
+        ull vevil_ans = part2(vevil);
+        std::cout << "\tVery Evil Part 2 Answer - " << std::to_string(vevil_ans) << std::endl;
+        // 2.7 secs!
+        assert(vevil_ans == 5799706413896802);
+        */
         return 0;
     }
 }

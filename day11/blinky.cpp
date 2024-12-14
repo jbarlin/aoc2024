@@ -14,7 +14,7 @@ namespace day11
         return find_stone_end_count(starting_position, target_blinks);
     }
 
-    const std::vector<ull> blink(ull input)
+    static const std::vector<ull> blink(const ull input)
     {
         // 0 -> 1
         // if digits mod 2 equals 1, mult by 2024
@@ -36,7 +36,7 @@ namespace day11
         }
     }
 
-    const ull Inky::find_stone_end_count(const std::vector<ull> input_stones, const unsigned int blinks_remaining)
+    const ull Inky::find_stone_end_count(const std::vector<ull> &input_stones, const unsigned int blinks_remaining)
     {
         if (blinks_remaining == 0)
         {
@@ -54,7 +54,7 @@ namespace day11
                     // We've seen this before!
                     result += cache[cache_key];
                 } else {
-                    auto out = blink(stone);
+                    const std::vector<ull> out = blink(stone);
                     const ull answer = find_stone_end_count(out, blinks_remaining - 1);
                     cache[cache_key] = answer;
                     result += answer;

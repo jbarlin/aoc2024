@@ -16,7 +16,7 @@ namespace day11 {
             std::map<std::pair<ull, unsigned int>, ull> cache;
             const std::vector<ull> starting_position;
             Inky(const std::vector<ull> &start): cache{std::map<std::pair<ull, unsigned int>, ull>()}, starting_position{start}{};
-            const ull find_stone_end_count(const std::vector<ull> input_stone, const unsigned int blinks_remaining);
+            const ull find_stone_end_count(const std::vector<ull> &input_stone, const unsigned int blinks_remaining);
             const ull total_stones_after(const unsigned int target_blinks);
 
     };

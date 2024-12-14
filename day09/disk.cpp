@@ -36,7 +36,7 @@ namespace day09
 
             bool found_home = false;
 
-            for (long unsigned int i = 0; i < was_frees.size(); i++)
+            for (unsigned long i = 0; i < was_frees.size(); i++)
             {
                 const Free curr_free = was_frees[i];
                 if(curr_free.size >= curr_file.size && curr_free.start_posn < curr_file.start_posn){

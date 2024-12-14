@@ -16,49 +16,10 @@ namespace day05
             });
     }
 
-    Puzzle::Puzzle(std::string path)
-    {
-        std::ifstream input_file(path);
-        assert(input_file.is_open());
-
-        const auto rule_delimiter = "|";
-        const auto book_delimiter = ",";
-
-        std::string curr_line;
-        while (std::getline(input_file, curr_line))
-        {
-            if (curr_line.contains(rule_delimiter))
-            {
-                int delim_p = curr_line.find(rule_delimiter);
-                // OK, this is a Rule
-                unsigned char before = std::stoi(curr_line.substr(0, delim_p));
-                curr_line.erase(0, delim_p + 1);
-                unsigned char after = std::stoi(curr_line);
-                Rule rule(before, after);
-                rules.push_back(rule);
-            }
-            else if (curr_line.contains(book_delimiter))
-            {
-                std::vector<unsigned char> book;
-                std::string delim = book_delimiter;
-                while (curr_line.contains(book_delimiter))
-                {
-                    int delim_p = curr_line.find(book_delimiter);
-                    unsigned char page = std::stoi(curr_line.substr(0, delim_p));
-                    curr_line.erase(0, delim_p + 1);
-                    book.push_back(page);
-                }
-                book.push_back(std::stoi(curr_line));
-                books.push_back(book);
-            }
-        }
-        input_file.close();
-    }
-
-    std::vector<std::vector<unsigned char>> Puzzle::compliant_books()
+    const std::vector<std::vector<unsigned char>> Puzzle::compliant_books() const
     {
         std::vector<std::vector<unsigned char>> answer;
-        for (std::vector<unsigned char> book : books)
+        for (const std::vector<unsigned char> &book : books)
         {
             if (satisfies_all(book, rules))
             {
@@ -68,11 +29,11 @@ namespace day05
         return answer;
     };
 
-    std::vector<std::vector<unsigned char>> Puzzle::noncompliant_books()
+    const std::vector<std::vector<unsigned char>> Puzzle::noncompliant_books() const
     {
         std::vector<std::vector<unsigned char>> answer;
 
-        for (std::vector<unsigned char> book : books)
+        for (const std::vector<unsigned char> &book : books)
         {
             if (!satisfies_all(book, rules))
             {
@@ -82,15 +43,17 @@ namespace day05
         return answer;
     };
 
-    void Puzzle::fix_book(std::vector<unsigned char> &book)
+    const std::vector<unsigned char> Puzzle::fix_book(const std::vector<unsigned char> &book) const
     {
-        while (!satisfies_all(book, rules))
+        std::vector<unsigned char> nbook = book;
+        while (!satisfies_all(nbook, this->rules))
         {
             for (Rule rule : rules)
             {
-                rule.make_happy(book);
+                rule.make_happy(nbook);
             }
         }
+        return nbook;
     }
 
 }

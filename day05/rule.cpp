@@ -52,7 +52,7 @@ namespace day05
         }
     }
 
-    bool Rule::satisfied(std::vector<unsigned char> book)
+    bool Rule::satisfied(const std::vector<unsigned char> &book)
     {
         bool found_before = false;
         bool found_after = false;

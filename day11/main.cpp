@@ -46,6 +46,8 @@ namespace day11
         std::cout << "\tPassed only test... :'( Y no pt 2 test" << std::endl;
 
         Inky actual = parse_puzzle("./day11/puzzle_input.txt");
+        actual.cache = test.cache;
+        
         std::cout << "\tRead in puzzle input" << std::endl;
 
         ull conrad_pt1 = actual.total_stones_after(25);

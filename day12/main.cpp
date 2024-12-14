@@ -1,5 +1,6 @@
 #include "main.h"
 #include "../utils/point.h"
+#include "../utils/grab_bag.h"
 
 #include <iostream>
 #include <vector>
@@ -30,19 +31,6 @@ namespace day12
         ull part2;
     };
 
-    bvec create_falsy(const unsigned int size)
-    {
-        std::vector<std::vector<bool>> bs;
-        bs.reserve(size);
-        for (unsigned int y = 0; y < size; y++)
-        {
-            std::vector<bool> by;
-            by.resize(size, false);
-            bs.emplace_back(by);
-        }
-        return bs;
-    }
-
     running fill_out_from_cell(const Point p, const puzzle &input, bvec &seen, const unsigned int size, const unsigned char curr)
     {
         running ans(0, 0, 0);
@@ -58,14 +46,14 @@ namespace day12
             const auto nx_left = Point(x - 1, y);
             const auto nx_right = Point(x + 1, y);
 
-            const bool UP = !((nx_up).inside(size) && (((nx_up)).extract_value_square_map(input) == curr));
-            const bool UP_RIGHT = !((Point(x + 1, y - 1)).inside(size) && (((Point(x + 1, y - 1))).extract_value_square_map(input) == curr));
-            const bool RIGHT = !((nx_right).inside(size) && (((nx_right)).extract_value_square_map(input) == curr));
-            const bool DOWN_RIGHT = !((Point(x + 1, y + 1)).inside(size) && (((Point(x + 1, y + 1))).extract_value_square_map(input) == curr));
-            const bool DOWN = !((nx_down).inside(size) && (((nx_down)).extract_value_square_map(input) == curr));
-            const bool DOWN_LEFT = !((Point(x - 1, y + 1)).inside(size) && (((Point(x - 1, y + 1))).extract_value_square_map(input) == curr));
-            const bool LEFT = !((nx_left).inside(size) && (((nx_left)).extract_value_square_map(input) == curr));
-            const bool UP_LEFT = !((Point(x - 1, y - 1)).inside(size) && (((Point(x - 1, y - 1))).extract_value_square_map(input) == curr));
+            const bool UP = !((nx_up).inside(size) && (((nx_up)).extract_uchar_from_map(input) == curr));
+            const bool UP_RIGHT = !((Point(x + 1, y - 1)).inside(size) && (((Point(x + 1, y - 1))).extract_uchar_from_map(input) == curr));
+            const bool RIGHT = !((nx_right).inside(size) && (((nx_right)).extract_uchar_from_map(input) == curr));
+            const bool DOWN_RIGHT = !((Point(x + 1, y + 1)).inside(size) && (((Point(x + 1, y + 1))).extract_uchar_from_map(input) == curr));
+            const bool DOWN = !((nx_down).inside(size) && (((nx_down)).extract_uchar_from_map(input) == curr));
+            const bool DOWN_LEFT = !((Point(x - 1, y + 1)).inside(size) && (((Point(x - 1, y + 1))).extract_uchar_from_map(input) == curr));
+            const bool LEFT = !((nx_left).inside(size) && (((nx_left)).extract_uchar_from_map(input) == curr));
+            const bool UP_LEFT = !((Point(x - 1, y - 1)).inside(size) && (((Point(x - 1, y - 1))).extract_uchar_from_map(input) == curr));
 
             if (DOWN)
             {
@@ -145,7 +133,7 @@ namespace day12
     {
         const unsigned int size = input.size();
         answer ans(0, 0);
-        bvec seen = create_falsy(size);
+        bvec seen = nickels::create_falsy(size);
 
         for (unsigned int y = 0; y < size; y++)
         {
@@ -155,7 +143,7 @@ namespace day12
                 if (!seen[x][y])
                 {
                     // New plot!
-                    const auto value = p.extract_value_square_map(input);
+                    const auto value = p.extract_uchar_from_map(input);
                     auto b = fill_out_from_cell(p, input, seen, size, value);
                     ans.part1 += (b.area * b.perimeter);
                     ans.part2 += (b.area * b.corner);

@@ -183,12 +183,12 @@ namespace day04
 
         unsigned long count = 0;
         // OK, now we need to search through the word_search
-        for (unsigned int curr_y = 0; curr_y < size; curr_y++)
+        for (unsigned int curr_y = 1; curr_y < size - 1; curr_y++)
         {
             std::vector<unsigned char> curr_line = word_search[curr_y];
-            for (unsigned int curr_x = 0; curr_x < size; curr_x++)
+            for (unsigned int curr_x = 1; curr_x < size - 1; curr_x++)
             {
-                if (get_from_puzzle(word_search, curr_x, curr_y) == A && curr_y >= 1 && curr_x >= 1 && (curr_y + 1) < size && (curr_x + 1) < size)
+                if (get_from_puzzle(word_search, curr_x, curr_y) == A)
                 {
                     // I am at "A"
                     unsigned char tl = get_from_puzzle(word_search, curr_x - 1, curr_y - 1);
