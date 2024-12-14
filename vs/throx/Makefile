@@ -1,6 +1,6 @@
 CXX = g++
 CXXFLAGS = -std=c++23 -fext-numeric-literals
-SOURCES := $(wildcard ./day*/*.cpp ./shared/Point.h ./shared/Rect.h ./shared/Split.h ./main.cpp)
+SOURCES := $(wildcard ./day*/*.cpp ./main.cpp)
 
 vs:
 	rm -rf ./target
