@@ -5,13 +5,14 @@
 #include <set>
 #include <fstream>
 #include <memory>
+#include "../utils/grab_bag.h"
 
 namespace day06
 {
 
     const Direction UP = point::UP;
 
-    unsigned long part2(const Puzzle &puzzle, const std::set<Point> &points_walked)
+    unsigned long part2(const Puzzle& puzzle, const std::set<Point> &points_walked)
     {
         unsigned long blockers = 0;
         for (Point where_to_add_blocker : points_walked)
@@ -23,18 +24,24 @@ namespace day06
             Puzzle added = puzzle.with_new_obsticle_at(where_to_add_blocker);
             const WalkResult orig(puzzle.start_point(), 0, UP, std::set<Point>());
             auto ref = std::ref(orig);
-            bool visited[puzzle.size][puzzle.size][4] = {false};
+            
+            // bool visited[puzzle.size][puzzle.size][4] = {false};
+            // std::vector<std::vector<std::vector<bool>>> visited(puzzle.size, std::vector<std::vector<bool>>(puzzle.size, std::vector<bool>(4, false))); 
+            // std::vector<bool> visited(puzzle.size * puzzle.size * 4, false);
+            std::unique_ptr<bool[]> visited = std::make_unique<bool[]>(puzzle.size * puzzle.size * 4);
+            
             while (ref.get().stop.has_value())
             {
                 const WalkResult nxt = added.misty_step_and_turn_right(ref.get().stop.value(), ref.get().facing);
                 if(nxt.stop.has_value()){
                     const Point pt = nxt.stop.value();
                     const Direction d = nxt.facing;
-                    if(visited[pt.x][pt.y][d.as_index()]){
+                    const size_t visited_ix = puzzle.size * 4 * pt.x + pt.y * 4 + d.as_index();
+                    if(visited[visited_ix]){
                         blockers++;
                         break;
                     }
-                    visited[pt.x][pt.y][d.as_index()] = true;
+                    visited[visited_ix] = true;
                 }
 
                 ref = std::ref(nxt);

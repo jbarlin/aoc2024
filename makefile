@@ -1,6 +1,6 @@
-CXX = g++
+CXX = clang++
 CXXFLAGS = -std=c++23 -Wall -Wfatal-errors
-SOURCES := $(wildcard ./utils/*.cpp ./utils/*.h ./day*/*.cpp ./*.cpp)
+SOURCES := $(wildcard ./utils/*.cpp ./day*/*.cpp ./*.cpp)
 
 run: clean debug
 	clear
@@ -54,6 +54,22 @@ opt2:
 opt3:
 	$(CXX) $(CXXFLAGS) -O3 $(SOURCES) -o ./target/opt3
 
+pgo:
+	$(CXX) $(CXXFLAGS) -fuse-ld=mold -O3 -march=native -fprofile-generate $(SOURCES) -o ./target/pgo_generator
+	(rm -rf ./tmp || true)
+	mkdir -p ./tmp
+	LLVM_PROFILE_FILE="./tmp/code-all.profraw" ./target/pgo_generator > /dev/null
+	LLVM_PROFILE_FILE="./tmp/code-j14.profraw" ./target/pgo_generator 14 > /dev/null
+	LLVM_PROFILE_FILE="./tmp/code-j9.profraw" ./target/pgo_generator 9 > /dev/null
+	LLVM_PROFILE_FILE="./tmp/code-6to1.profraw" ./target/pgo_generator 6 1 > /dev/null
+	LLVM_PROFILE_FILE="./tmp/code-j6.profraw" ./target/pgo_generator 6 > /dev/null
+	LLVM_PROFILE_FILE="./tmp/code-all-pt2.profraw" ./target/pgo_generator > /dev/null
+	LLVM_PROFILE_FILE="./tmp/code-all-pt3.profraw" ./target/pgo_generator 1 14 > /dev/null
+	llvm-profdata merge -output=./tmp/code.profdata ./tmp/code-*.profraw
+	$(CXX) $(CXXFLAGS) -fuse-ld=mold -O3 -march=native -fprofile-use=./tmp/code.profdata $(SOURCES) -o ./target/pgo
+	rm -f ./target/pgo_generator
+	rm -rf ./tmp
+
 clean:
 	rm -rf ./target
 	mkdir -p ./target
@@ -62,4 +78,4 @@ vs: clean
 	$(CXX) $(CXXFLAGS) $(SOURCES) -o ./target/conrad_attempt_no_opt
 	$(CXX) $(CXXFLAGS) -O3 -march=native $(SOURCES) -o ./target/conrad_attempt_opt3_march
 
-all: clean debug optz opts opt1 opt2 opt3 optzmarch optsmarch opt1march opt2march opt3march opt2mold opt3mold opt2mm opt3mm
+all: clean debug optz opts opt1 opt2 opt3 optzmarch optsmarch opt1march opt2march opt3march opt2mold opt3mold opt2mm opt3mm pgo
