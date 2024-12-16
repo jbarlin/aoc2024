@@ -109,6 +109,7 @@
         "__tree": "cpp",
         "__hash_table": "cpp",
         "queue": "cpp",
-        "stack": "cpp"
+        "stack": "cpp",
+        "__node_handle": "cpp"
     }
 }

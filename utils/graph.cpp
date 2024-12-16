@@ -13,8 +13,9 @@ namespace graph
         char dir_x;
         char dir_y;
         unsigned long long cost;
-        PDandCost(const PointAndDir pd, const unsigned long long cost): pos_x{pd.position.x}, pos_y{pd.position.y},dir_x{pd.facing.x},dir_y{pd.facing.y}, cost{cost}{};
-        const PointAndDir situation() const {
+        PDandCost(const PointAndDir pd, const unsigned long long cost) : pos_x{pd.position.x}, pos_y{pd.position.y}, dir_x{pd.facing.x}, dir_y{pd.facing.y}, cost{cost} {};
+        const PointAndDir situation() const
+        {
             return PointAndDir(Point(pos_x, pos_y), Direction(dir_x, dir_y));
         };
     };
@@ -22,7 +23,7 @@ namespace graph
     class ComparePdAndCost
     {
     public:
-        bool operator()(const PDandCost& a, const PDandCost& b)
+        bool operator()(const PDandCost &a, const PDandCost &b)
         {
             return a.cost < b.cost;
         }
@@ -35,19 +36,20 @@ namespace graph
         djikstra_queue.push(start_cost);
         while (djikstra_queue.size() > 0)
         {
-            const auto curr_sit = djikstra_queue.top();
+            const auto curr_posn_cost = djikstra_queue.top();
             djikstra_queue.pop();
-            for (const auto &nx : this->graph.at(curr_sit.situation()))
+            const PointAndDir point_and_dir = curr_posn_cost.situation();
+
+            if (point_and_dir.position == end)
             {
-                if (nx.first.position == end)
-                {
-                    return curr_sit.cost + nx.second;
-                }
-                else
-                {
-                    const PDandCost to_go(nx.first, curr_sit.cost + nx.second);
-                    djikstra_queue.push(to_go);
-                }
+                return curr_posn_cost.cost;
+            }
+
+            const std::map<PointAndDir, unsigned int> next_possible_moves = graph.at(point_and_dir);
+            for (const std::pair<PointAndDir, unsigned int> &move: next_possible_moves)
+            {
+                const PDandCost next(move.first, curr_posn_cost.cost + move.second);
+                djikstra_queue.push(next);
             }
         }
         assert(false);
@@ -57,46 +59,48 @@ namespace graph
     {
 
         std::map<PointAndDir, std::map<PointAndDir, unsigned int>> graph;
-        std::stack<PointAndDir> stack;
-        stack.push(PointAndDir(start, start_direction));
-        while (stack.size() > 0)
+
+        Direction dirs[4] = {point::UP, point::DOWN, point::LEFT, point::RIGHT};
+
+        for (unsigned int y = 0; y < incoming_map.size(); y++)
         {
-            const auto curr_situation = stack.top();
-            stack.pop();
-            if (graph.contains(curr_situation))
+            auto curr_x = incoming_map[y];
+            for (unsigned int x = 0; x < curr_x.size(); x++)
             {
-                // Already handled - don't re-handle!
-                continue;
-            }
-            // OK, so options are:
-            //  1. progress forward
-            //  2. turn left (and incur the cost)
-            //  3. turn right (and incur the cost)
-            //  4. turn around (and incur the cost * 2)
-            if (curr_situation.position.can_move(curr_situation.facing, incoming_map.size(), incoming_map.size()))
-            {
-                // OK, we can get that object!
-                const auto moved = curr_situation.position.move(curr_situation.facing);
-                if (moved.extract_uchar_from_map(incoming_map) != wall_char)
+                const Point curr(x, y);
+                if (curr.extract_uchar_from_map(incoming_map) != wall_char)
                 {
-                    const auto next = PointAndDir(moved, curr_situation.facing);
-                    graph[curr_situation][next] = 1;
-                    stack.push(next);
+                    for (const Direction &d : dirs)
+                    {
+                        const PointAndDir me(curr, d);
+                        std::map<PointAndDir, unsigned int> possibles;
+                        // OK, there is the left/right/turn around
+                        const PointAndDir left(me.position, me.facing.turn_left());
+                        possibles.insert(std::pair(left, turn_cost));
+
+                        const PointAndDir right(me.position, me.facing.turn_right());
+                        possibles.insert(std::pair(right, turn_cost));
+
+                        const PointAndDir around(me.position, me.facing.turn_around());
+                        possibles.insert(std::pair(around, turn_cost * 2));
+
+                        // And (maybe) moving forward for 1!
+                        if (curr.can_move(d, incoming_map.size(), curr_x.size()))
+                        {
+                            const auto moved = curr.move(d);
+                            if (moved.extract_uchar_from_map(incoming_map) != wall_char)
+                            {
+                                const PointAndDir mv(moved, d);
+                                possibles.insert(std::pair(mv, 1));
+                            }
+                        }
+
+                        graph.insert(std::pair(me, possibles));
+                    }
                 }
             }
-            const PointAndDir left(curr_situation.position, curr_situation.facing.turn_left());
-            stack.push(left);
-            graph[curr_situation][left] = turn_cost;
-
-            const PointAndDir right(curr_situation.position, curr_situation.facing.turn_right());
-            stack.push(right);
-            graph[curr_situation][right] = turn_cost;
-
-            const PointAndDir around(curr_situation.position, curr_situation.facing.turn_around());
-            stack.push(around);
-            graph[curr_situation][around] = turn_cost * 2;
         }
-
+        std::cout << "Graph size: " << std::to_string(graph.size()) << std::endl;
         return Graph(graph);
     }
 }

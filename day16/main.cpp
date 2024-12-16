@@ -74,6 +74,7 @@ namespace day16
                 }
                 curr_x++;
             }
+            out.emplace_back(row);
             curr_y++;
         }
 
