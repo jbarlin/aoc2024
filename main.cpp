@@ -13,6 +13,7 @@
 #include "./day13/main.h"
 #include "./day14/main.h"
 #include "./day15/main.h"
+#include "./day16/main.h"
 
 #include <iostream>
 #include <cassert>
@@ -49,6 +50,8 @@ int run_all_days()
     assert(day14::main() == 0);
     std::cout << "Day 15" << std::endl;
     // assert(day15::main() == 0);
+    std::cout << "Day 16" << std::endl;
+    assert(day16::main() == 0);
     return 0;
 }
 
@@ -56,6 +59,10 @@ int run_day(const int day)
 {
     switch (day)
     {
+    case 16:
+        std::cout << "Day 16" << std::endl;
+        return day16::main();
+        break;
     case 15:
         std::cout << "Day 15" << std::endl;
         // return day15::main();
