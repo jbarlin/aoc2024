@@ -25,7 +25,7 @@ namespace graph
     public:
         bool operator()(const PDandCost &a, const PDandCost &b)
         {
-            return a.cost < b.cost;
+            return a.cost > b.cost; // we want opposite sorting!!! 
         }
     };
 
