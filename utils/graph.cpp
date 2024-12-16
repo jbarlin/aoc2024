@@ -46,7 +46,7 @@ namespace graph
             }
 
             const std::map<PointAndDir, unsigned int> next_possible_moves = graph.at(point_and_dir);
-            for (const std::pair<PointAndDir, unsigned int> &move: next_possible_moves)
+            for (const std::pair<PointAndDir, unsigned int> move: next_possible_moves)
             {
                 const PDandCost next(move.first, curr_posn_cost.cost + move.second);
                 djikstra_queue.push(next);
@@ -59,9 +59,9 @@ namespace graph
     {
 
         std::map<PointAndDir, std::map<PointAndDir, unsigned int>> graph;
-
         Direction dirs[4] = {point::UP, point::DOWN, point::LEFT, point::RIGHT};
-
+        bool has_seen_start = false;
+        bool has_seen_end = false;
         for (unsigned int y = 0; y < incoming_map.size(); y++)
         {
             auto curr_x = incoming_map[y];
@@ -72,6 +72,9 @@ namespace graph
                 {
                     for (const Direction &d : dirs)
                     {
+                        if(curr == start && d == start_direction){
+                            has_seen_start = true;
+                        }
                         const PointAndDir me(curr, d);
                         std::map<PointAndDir, unsigned int> possibles;
                         // OK, there is the left/right/turn around
@@ -92,6 +95,7 @@ namespace graph
                             {
                                 const PointAndDir mv(moved, d);
                                 possibles.insert(std::pair(mv, 1));
+                                has_seen_end = has_seen_end || moved == end;
                             }
                         }
 
@@ -100,7 +104,12 @@ namespace graph
                 }
             }
         }
+        
         std::cout << "Graph size: " << std::to_string(graph.size()) << std::endl;
+        
+        assert(has_seen_start);
+        assert(has_seen_end);
+
         return Graph(graph);
     }
 }
