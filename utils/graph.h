@@ -2,6 +2,8 @@
 
 #include "./point.h"
 #include <map>
+#include <unordered_map>
+#include "navigator.h"
 
 namespace graph
 {
@@ -11,32 +13,7 @@ namespace graph
     typedef point::Point Point;
     typedef point::Direction Direction;
 
-    struct PointAndDir
-    {
-        const Point position;
-        const Direction facing;
-
-        PointAndDir(Point p, Direction f): position{p},facing{f}{};
-        PointAndDir(const PointAndDir &oth): position{oth.position},facing{oth.facing}{};
-
-        const bool operator==(const PointAndDir &oth) const
-        {
-            return position == oth.position && facing == oth.facing;
-        }
-
-        const bool operator<(const PointAndDir &oth) const
-        {
-            // Prefer the facing one since it doesn't do a hash
-            if (facing == oth.facing)
-            {
-                return position < oth.position;
-            }
-            else
-            {
-                return facing < oth.facing;
-            }
-        }
-    };
+    typedef navigator::NavigatorPosition PointAndDir;
 
     class Graph
     {

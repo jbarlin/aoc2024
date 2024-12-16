@@ -1,5 +1,6 @@
 #include "point.h"
 
+
 namespace point
 {
 

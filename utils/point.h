@@ -78,4 +78,11 @@ namespace point
             {}
             ;
     };
-}
+};
+
+template<>
+struct std::hash<point::Point>{
+    std::size_t operator()(const point::Point& k) const {
+        return k.hash();
+    }
+};

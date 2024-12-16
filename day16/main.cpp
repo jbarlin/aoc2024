@@ -26,7 +26,7 @@ namespace day16
 
     ull part1(const puzzle &input)
     {
-        return input.graph.path_between(graph::PointAndDir(input.start, point::LEFT), input.end);
+        return input.graph.path_between(graph::PointAndDir(input.start, point::RIGHT), input.end);
     }
 
     puzzle parse_puzzle(const std::string path, unsigned int square_size)
@@ -77,7 +77,8 @@ namespace day16
             out.emplace_back(row);
             curr_y++;
         }
-
+        assert(start_x != 0 || start_y != 0);
+        assert(end_x != 0 || end_y != 0);
         const auto start = point::Point(start_x, start_y);
         const auto end = point::Point(end_x, end_y);
 

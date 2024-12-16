@@ -5,6 +5,7 @@
 
 namespace point
 {
+    
     Direction::Direction(char x, char y) : x{x}, y{y}
     {
         assert(-2 < x);
@@ -13,6 +14,25 @@ namespace point
         assert(y < 2);
         assert(x != 0 || y != 0);
     };
+
+    const std::string Direction::as_string() const {
+        if (this->operator==(UP))
+        {
+            return "UP";
+        }
+        else if (this->operator==(RIGHT))
+        {
+            return "RIGHT";
+        }
+        else if (this->operator==(DOWN))
+        {
+            return "DOWN";
+        }
+        else
+        {
+            return "LEFT";
+        }
+    }
 
     bool Direction::operator<(const Direction &other) const
     {
