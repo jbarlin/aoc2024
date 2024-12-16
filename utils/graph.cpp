@@ -109,6 +109,7 @@ namespace graph
                         if (curr.can_move(l_turn, curr_x.size(), incoming_map.size()))
                         {
                             const auto moved = curr.move(l_turn);
+assert((moved.x == curr.x || moved.y == curr.y) && (!(moved.x == curr.x && moved.y == curr.y))));
                             if (moved.extract_uchar_from_map(incoming_map) != wall_char)
                             {
                                 const PointAndDir mv(moved, l_turn);
@@ -121,6 +122,7 @@ namespace graph
                         if (curr.can_move(r_turn, curr_x.size(), incoming_map.size()))
                         {
                             const auto moved = curr.move(r_turn);
+assert((moved.x == curr.x || moved.y == curr.y) && (!(moved.x == curr.x && moved.y == curr.y))));
                             if (moved.extract_uchar_from_map(incoming_map) != wall_char)
                             {
                                 const PointAndDir mv(moved, r_turn);
@@ -133,6 +135,7 @@ namespace graph
                         if (curr.can_move(a_turn, curr_x.size(), incoming_map.size()))
                         {
                             const auto moved = curr.move(a_turn);
+assert((moved.x == curr.x || moved.y == curr.y) && (!(moved.x == curr.x && moved.y == curr.y))));
                             if (moved.extract_uchar_from_map(incoming_map) != wall_char)
                             {
                                 const PointAndDir mv(moved, a_turn);
@@ -145,6 +148,7 @@ namespace graph
                         if (curr.can_move(d, curr_x.size(), incoming_map.size()))
                         {
                             const auto moved = curr.move(d);
+assert((moved.x == curr.x || moved.y == curr.y) && (!(moved.x == curr.x && moved.y == curr.y))));
                             if (moved.extract_uchar_from_map(incoming_map) != wall_char)
                             {
                                 const PointAndDir mv(moved, d);
