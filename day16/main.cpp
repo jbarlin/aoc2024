@@ -6,27 +6,25 @@
 #include <sstream>
 #include <cassert>
 #include "../utils/graph.h"
+#include "../utils/navigator.h"
 
 namespace day16
 {
 
 
-    struct puzzle{
-        const graph::Graph graph;
-        const point::Point start;
-        const point::Point end;
-    };
+    typedef navigator::CostAndPathOfNavigation puzzle;
 
     // typedef graph::Graph puzzle;
 
     ull part2(const puzzle &input)
     {
-        return 0;
+        const puzzle p = input;
+        return input.all_possible_points().size();
     }
 
     ull part1(const puzzle &input)
     {
-        return input.graph.path_between(graph::PointAndDir(input.start, point::RIGHT), input.end);
+        return input.cost;
     }
 
     puzzle parse_puzzle(const std::string path, unsigned int square_size)
@@ -83,7 +81,7 @@ namespace day16
         const auto end = point::Point(end_x, end_y);
 
         const auto graph = graph::convert_to_graph(out, start, point::RIGHT, end, 1, 1000);
-        return puzzle(graph, start, end);
+        return graph.path_between(graph::PointAndDir(start, point::RIGHT), end);
     }
 
     int main()
@@ -91,7 +89,7 @@ namespace day16
         const puzzle test = parse_puzzle("./day16/test_input.txt", 15);
 
         std::cout << "\tRead in test input" << std::endl;
-        ull test_expected_1 = 0;
+        ull test_expected_1 = 7036;
         ull test_actual_1 = part1(test);
         if (test_actual_1 != test_expected_1)
         {
@@ -101,7 +99,7 @@ namespace day16
 
         std::cout << "\tPassed Pt 1 tests" << std::endl;
 
-        ull test_expected_2 = 0;
+        ull test_expected_2 = 45;
         ull test_actual_2 = part2(test);
         if (test_actual_2 != test_expected_2)
         {

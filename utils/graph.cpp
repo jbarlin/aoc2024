@@ -2,11 +2,12 @@
 
 #include <stack>
 #include <queue>
+#include <unordered_set>
 
 namespace graph
 {
 
-#define graphtesting true
+#define graphtesting false
 
     struct PDandCost
     {
@@ -15,18 +16,12 @@ namespace graph
         char dir_x;
         char dir_y;
         unsigned long long cost;
-        unsigned long prev_x;
-        unsigned long prev_y;
-        PDandCost(const PointAndDir pd, const unsigned long long cost, Point prev) : pos_x{pd.position.x}, pos_y{pd.position.y}, dir_x{pd.facing.x}, dir_y{pd.facing.y}, cost{cost}, prev_x{prev.x}, prev_y{prev.y} {};
+        std::unordered_set<PointAndDir> seen_points;
+        PDandCost(const PointAndDir &pd, const unsigned long long cost, const std::unordered_set<PointAndDir> &seen_points) : pos_x{pd.position.x}, pos_y{pd.position.y}, dir_x{pd.facing.x}, dir_y{pd.facing.y}, cost{cost}, seen_points{seen_points} {};
         const PointAndDir situation() const
         {
             return PointAndDir(Point(pos_x, pos_y), Direction(dir_x, dir_y));
         };
-
-        const Point prev() const
-        {
-            return Point(prev_x, prev_y);
-        }
 
         const std::string as_string() const
         {
@@ -43,39 +38,75 @@ namespace graph
         }
     };
 
-    const unsigned long long Graph::path_between(const PointAndDir &start, const Point &end) const
+    const CostAndPathOfNavigation Graph::path_between(const PointAndDir &start, const Point &end) const
     {
+        // PDandCost has: Position and Direction (the "node" we are at) and the cost incurred so far
         std::priority_queue<PDandCost, std::vector<PDandCost>, ComparePdAndCost> djikstra_queue;
-        const PDandCost start_cost(start, 0, start.position);
+        std::unordered_map<PointAndDir, unsigned long long> lowest_costs;
+        std::unordered_set<PointAndDir> seen_points;
+
+        const PDandCost start_cost(start, 0, seen_points);
         djikstra_queue.push(start_cost);
-        unsigned long long iters = 0;
-        while (djikstra_queue.size() > 0)
+        lowest_costs.insert(std::pair(start, 0));
+
+        std::vector<std::unordered_set<Point>> paths;
+        unsigned long long final_cost = 0;
+
+        while (!djikstra_queue.empty())
         {
-            iters++;
             const auto curr_posn_cost = djikstra_queue.top();
             djikstra_queue.pop();
+            std::unordered_set<PointAndDir> now_seen(curr_posn_cost.seen_points);
+            now_seen.insert(curr_posn_cost.situation());
             const PointAndDir point_and_dir = curr_posn_cost.situation();
 
             if (point_and_dir.position == end)
             {
-                return curr_posn_cost.cost;
+                // return curr_posn_cost.cost;
+                if (paths.empty())
+                {
+                    final_cost = curr_posn_cost.cost;
+                }
+
+                if (final_cost == curr_posn_cost.cost)
+                {
+                    std::unordered_set<Point> points;
+                    for (const auto &v : now_seen)
+                    {
+                        points.insert(v.position);
+                    }
+                    paths.push_back(points);
+                }
+                else
+                {
+                    assert(final_cost < curr_posn_cost.cost);
+                    // OK, we've gone past the best ones!
+                    return CostAndPathOfNavigation(final_cost, paths);
+                }
             }
+
+            const Point curr_pt = point_and_dir.position;
 
             const std::map<PointAndDir, unsigned int> next_possible_moves = graph.at(point_and_dir);
             for (const std::pair<PointAndDir, unsigned int> move : next_possible_moves)
             {
-                if (move.first.position != curr_posn_cost.prev())
+                const PointAndDir &next_pd = move.first;
+                unsigned long long new_cost = curr_posn_cost.cost + move.second;
+
+                if (now_seen.contains(next_pd))
                 {
-                    const PDandCost next(move.first, curr_posn_cost.cost + move.second, point_and_dir.position);
-                    djikstra_queue.push(next);
+                    continue;
                 }
+
+                // Check if already visited with a lower cost
+                if (lowest_costs.contains(next_pd) && lowest_costs[next_pd] < new_cost)
+                {
+                    continue;
+                }
+
+                lowest_costs.insert(std::pair(next_pd, new_cost));
+                djikstra_queue.push(PDandCost(next_pd, new_cost, now_seen));
             }
-#if graphtesting
-            std::cout << "\tDjikstra stack size: " << std::to_string(djikstra_queue.size()) << std::endl;
-            std::cout << "\t\tcurr_posn_cost: " << curr_posn_cost.as_string() << std::endl;
-#endif
-            assert(djikstra_queue.size() < 5000);
-            assert(iters < 5000);
         }
         assert(false);
     }
@@ -95,68 +126,49 @@ namespace graph
                 const Point curr(x, y);
                 if (curr.extract_uchar_from_map(incoming_map) != wall_char)
                 {
-                    for (const Direction &d : dirs)
+                    for (const Direction d : dirs)
                     {
                         if (curr == start && d == start_direction)
                         {
                             has_seen_start = true;
                         }
                         const PointAndDir me(curr, d);
+#if graphtesting
+                        std::cout << "\tNODE: " << me.as_string() << std::endl;
+#endif
                         std::map<PointAndDir, unsigned int> possibles;
-                        // OK, there is the left/right/turn around
+                        // OK, there is the left/right turn around
 
                         const auto l_turn = d.turn_left();
-                        if (curr.can_move(l_turn, curr_x.size(), incoming_map.size()))
-                        {
-                            const auto moved = curr.move(l_turn);
-assert((moved.x == curr.x || moved.y == curr.y) && (!(moved.x == curr.x && moved.y == curr.y))));
-                            if (moved.extract_uchar_from_map(incoming_map) != wall_char)
-                            {
-                                const PointAndDir mv(moved, l_turn);
-                                possibles.insert(std::pair(mv, turn_cost + 1));
-                                has_seen_end = has_seen_end || moved == end;
-                            }
-                        }
+                        const PointAndDir l(curr, l_turn);
+                        possibles.insert(std::pair(l, turn_cost));
 
                         const auto r_turn = d.turn_right();
-                        if (curr.can_move(r_turn, curr_x.size(), incoming_map.size()))
-                        {
-                            const auto moved = curr.move(r_turn);
-assert((moved.x == curr.x || moved.y == curr.y) && (!(moved.x == curr.x && moved.y == curr.y))));
-                            if (moved.extract_uchar_from_map(incoming_map) != wall_char)
-                            {
-                                const PointAndDir mv(moved, r_turn);
-                                possibles.insert(std::pair(mv, turn_cost + 1));
-                                has_seen_end = has_seen_end || moved == end;
-                            }
-                        }
-
-                        const auto a_turn = d.turn_around();
-                        if (curr.can_move(a_turn, curr_x.size(), incoming_map.size()))
-                        {
-                            const auto moved = curr.move(a_turn);
-assert((moved.x == curr.x || moved.y == curr.y) && (!(moved.x == curr.x && moved.y == curr.y))));
-                            if (moved.extract_uchar_from_map(incoming_map) != wall_char)
-                            {
-                                const PointAndDir mv(moved, a_turn);
-                                possibles.insert(std::pair(mv, turn_cost + turn_cost + 1));
-                                has_seen_end = has_seen_end || moved == end;
-                            }
-                        }
+                        const PointAndDir r(curr, r_turn);
+                        possibles.insert(std::pair(r, turn_cost));
 
                         // And (maybe) moving forward for 1!
-                        if (curr.can_move(d, curr_x.size(), incoming_map.size()))
+                        const Point moved = curr.move(d);
+#if graphtesting
+                        std::cout << "\t\tMOVED = " << moved.as_string() << " -> " << std::to_string(moved.extract_uchar_from_map(incoming_map)) << std::endl;
+#endif
+                        assert((moved.x == curr.x || moved.y == curr.y) && (!(moved.x == curr.x && moved.y == curr.y)));
+                        if (moved.extract_uchar_from_map(incoming_map) != wall_char)
                         {
-                            const auto moved = curr.move(d);
-assert((moved.x == curr.x || moved.y == curr.y) && (!(moved.x == curr.x && moved.y == curr.y))));
-                            if (moved.extract_uchar_from_map(incoming_map) != wall_char)
-                            {
-                                const PointAndDir mv(moved, d);
-                                possibles.insert(std::pair(mv, 1));
-                                has_seen_end = has_seen_end || moved == end;
-                            }
+#if graphtesting
+                            std::cout << "\t\tINSERTED!!!" << std::endl;
+#endif
+                            const PointAndDir mv(moved, d);
+                            possibles.insert(std::pair(mv, 1));
+                            has_seen_end = has_seen_end || moved == end;
                         }
+#if graphtesting
 
+                        for (const auto m : possibles)
+                        {
+                            std::cout << "\t\t-> " << m.first.as_string() << " $" << std::to_string(m.second) << std::endl;
+                        }
+#endif
                         graph.insert(std::pair(me, possibles));
                     }
                 }
